@@ -143,3 +143,28 @@ The detection logic was then operationalized as a scheduled Splunk alert named *
 ![Splunk port scan alert](screenshots/detection-scenario/Splunk_Port_Scan_Alert_Triggered.png)
 
 *Figure 6 — Splunk scheduled alert for network reconnaissance showing successful trigger history after detecting the simulated TCP port scan.*
+
+### 6. Sigma Detection Engineering
+
+To make the reconnaissance detection portable across SIEM platforms, Sigma was used to define vendor-neutral detection logic for the Windows Firewall telemetry.
+
+The Sigma correlation logic identifies dropped TCP connections and groups the activity into five-minute windows. It then counts the number of distinct destination ports contacted by each source IP. Activity involving **3 or more unique destination ports** within the time window meets the detection threshold.
+
+The Sigma rule was validated using Sigma CLI and then converted to Splunk SPL using the Splunk Windows processing pipeline. This demonstrates how platform-independent detection logic can be translated into SIEM-specific queries.
+
+The generated Splunk correlation logic included:
+
+```text
+action="DROP" protocol="TCP"
+| bin _time span=5m
+| stats dc(dst_port) as value_count by _time src_ip
+| search value_count >= 3
+```
+
+This converted query preserves the core detection behavior of the Sigma correlation: identifying a source generating blocked TCP connections across multiple destination ports within a defined time window.
+
+#### Sigma Conversion Evidence
+
+![Sigma correlation converted to Splunk SPL](screenshots/detection-scenario/Sigma_Correlation_Converted_to_Splunk_SPL.png)
+
+*Figure 7 — Sigma correlation rule converted into Splunk SPL, demonstrating translation of vendor-neutral detection logic into SIEM-specific correlation logic.*
