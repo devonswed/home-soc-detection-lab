@@ -69,3 +69,15 @@ The scan probed the Windows endpoint for accessible TCP services. The Windows Fi
 ![Kali Linux Nmap SYN scan](screenshots/detection-scenario/01-kali-nmap-syn-scan.png)
 
 *Figure 1 — Controlled TCP SYN reconnaissance performed from the Kali Linux attacker VM against the monitored Windows 11 endpoint. The target remained reachable while the Windows Firewall filtered the scanned TCP ports.*
+
+### 2. Windows Firewall Telemetry
+
+The Windows 11 endpoint was configured to log dropped network connections through Windows Defender Firewall. Following the Nmap SYN scan, the firewall log recorded repeated TCP connection attempts originating from the Kali Linux attacker VM (`192.168.134.130`) and targeting the monitored Windows endpoint (`192.168.134.129`).
+
+The log entries show the firewall dropping TCP traffic across multiple destination ports, providing host-level evidence of the reconnaissance activity.
+
+#### Firewall Log Evidence
+
+![Windows Firewall dropped TCP traffic](screenshots/detection-scenario/02-windows-firewall-dropped-traffic.png)
+
+*Figure 2 — Windows Firewall telemetry showing dropped TCP connection attempts from the Kali Linux attacker VM (`192.168.134.130`) to the monitored Windows 11 endpoint (`192.168.134.129`).*
