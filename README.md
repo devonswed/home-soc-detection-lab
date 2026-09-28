@@ -38,6 +38,15 @@ The lab was built in VMware Workstation using three virtual machines connected t
 | Nmap | Controlled network reconnaissance |
 | Sigma | Vendor-neutral detection rules and correlation logic |
 
+### Detection Artifacts
+
+The custom detection logic developed for this project is included in the repository for review:
+
+- [`detections/wazuh/windows_firewall_decoder.xml`](detections/wazuh/windows_firewall_decoder.xml) — Custom Wazuh decoder for parsing Windows Firewall dropped TCP traffic.
+- [`detections/wazuh/network_recon_rule.xml`](detections/wazuh/network_recon_rule.xml) — Custom Wazuh reconnaissance detection mapped to MITRE ATT&CK T1046.
+- [`detections/sigma/network_port_scan.yml`](detections/sigma/network_port_scan.yml) — Sigma base detection for blocked TCP traffic.
+- [`detections/sigma/network_port_scan_correlation.yml`](detections/sigma/network_port_scan_correlation.yml) — Sigma correlation rule identifying connections to multiple destination ports within a defined time window.
+
 ## Detection Scenario: Network Reconnaissance
 
 ### Scenario Overview
