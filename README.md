@@ -14,6 +14,7 @@ This project demonstrates an end-to-end security monitoring and detection workfl
 - Map detected activity to the MITRE ATT&CK framework.
 - Create vendor-neutral Sigma detection rules and translate them into Splunk SPL.
 - Validate detections against real telemetry generated inside the lab.
+  
 ## Lab Architecture
 
 The lab was built in VMware Workstation using three virtual machines connected through a VMware NAT network.
@@ -52,7 +53,7 @@ The resulting telemetry was analyzed across multiple layers of the lab:
 - **Wireshark** provided packet-level validation of the scan traffic.
 - **Splunk Enterprise** was used to search, extract, correlate, and analyze the firewall events.
 - **Sigma** was used to create vendor-neutral detection logic and translate the detection into Splunk SPL.
-- The activity was mapped to **MITRE ATT&CK T1046 – Network Service Discovery/Scanning**.
+- The activity was mapped to **MITRE ATT&CK T1046 – Network Service Discovery**.
 
 ### 1. Reconnaissance Generation
 
@@ -79,6 +80,7 @@ The log entries show the firewall dropping TCP traffic across multiple destinati
 #### Firewall Log Evidence
 
 ![Windows Firewall dropped TCP traffic](screenshots/detection-scenario/02-windows-firewall-dropped-traffic.png)
+
 *Figure 2 — Windows Firewall telemetry showing dropped TCP connection attempts from the Kali Linux attacker VM (`192.168.134.130`) to the monitored Windows 11 endpoint (`192.168.134.129`).*
 
 ### 3. Wazuh Detection
@@ -146,7 +148,7 @@ The detection logic was then operationalized as a scheduled Splunk alert named *
 
 ### 6. Sigma Detection Engineering
 
-To make the reconnaissance detection portable across SIEM platforms, Sigma was used to define vendor-neutral detection logic for the Windows Firewall telemetry.
+To express the reconnaissance detection in a portable, SIEM-agnostic format, Sigma was used to define detection logic for the Windows Firewall telemetry.
 
 The Sigma correlation logic identifies dropped TCP connections and groups the activity into five-minute windows. It then counts the number of distinct destination ports contacted by each source IP. Activity involving **3 or more unique destination ports** within the time window meets the detection threshold.
 
@@ -169,7 +171,7 @@ This converted query preserves the core detection behavior of the Sigma correlat
 
 *Figure 7 — Sigma correlation rule converted into Splunk SPL, demonstrating translation of vendor-neutral detection logic into SIEM-specific correlation logic.*
 
-## 7. Investigation Summary
+### 7. Investigation Summary
 
 This project demonstrated an end-to-end detection engineering and SOC investigation workflow using a controlled network reconnaissance scenario within a virtualized home lab.
 
