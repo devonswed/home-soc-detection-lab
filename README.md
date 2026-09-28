@@ -105,3 +105,20 @@ Key detection details:
 
 *Figure 3 — Wazuh custom detection triggered by blocked TCP reconnaissance traffic from the Kali Linux attacker VM. The alert identifies the source and destination systems, firewall action, custom rule, severity level, and MITRE ATT&CK mapping.*
 
+### 4. Wireshark Packet Analysis
+
+Wireshark was used on the Windows 11 endpoint to validate the reconnaissance activity at the packet level. The capture was filtered to isolate TCP SYN packets originating from the Kali Linux attacker VM (`192.168.134.130`) and targeting the Windows endpoint (`192.168.134.129`).
+
+The following display filter was applied:
+
+```text
+ip.src == 192.168.134.130 && ip.dst == 192.168.134.129 && tcp.flags.syn == 1 && tcp.flags.ack == 0
+```
+
+The capture shows repeated TCP SYN packets targeting multiple destination ports, including ports 21, 22, 23, 25, 110, 113, 554, 993, and 1025. This packet-level evidence confirms the port-scanning behavior observed in the Windows Firewall telemetry and subsequently detected by Wazuh.
+
+#### Wireshark Packet Evidence
+
+![Wireshark Nmap SYN traffic](screenshots/detection-scenario/04-wireshark-nmap-syn-traffic.png)
+
+*Figure 4 — Wireshark capture showing TCP SYN probes from the Kali Linux attacker VM (`192.168.134.130`) to multiple ports on the monitored Windows 11 endpoint (`192.168.134.129`).*
