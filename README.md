@@ -79,5 +79,30 @@ The log entries show the firewall dropping TCP traffic across multiple destinati
 #### Firewall Log Evidence
 
 ![Windows Firewall dropped TCP traffic](screenshots/detection-scenario/02-windows-firewall-dropped-traffic.png)
+*Figure 2 — Windows Firewall telemetry showing dropped TCP connection attempts from the Kali Linux attacker VM (`192.168.134.130`) to the monitored Windows 11 endpoint (`192.168.134.129`).*
+
+### 3. Wazuh Detection
+
+Windows Firewall telemetry was ingested by the Wazuh agent running on the Windows 11 endpoint. A custom decoder was used to parse the firewall log and extract fields including the source IP, destination IP, source port, destination port, protocol, and firewall action.
+
+A custom Wazuh detection rule was then created to identify blocked TCP traffic originating from the Kali Linux attacker VM. The rule generated a **Level 8 alert** when the reconnaissance traffic was detected.
+
+Key detection details:
+
+- **Rule ID:** `100100`
+- **Rule Level:** `8`
+- **Source IP:** `192.168.134.130` (Kali Linux)
+- **Destination IP:** `192.168.134.129` (WindowsSOC)
+- **Protocol:** TCP
+- **Firewall Action:** DROP
+- **Decoder:** `windows-firewall`
+- **MITRE ATT&CK:** `T1046`
+- **Tactic:** Discovery
+
+#### Wazuh Detection Evidence
+
+![Wazuh custom reconnaissance detection](screenshots/detection-scenario/03-wazuh-custom-recon-detection.png)
+
+*Figure 3 — Wazuh custom detection triggered by blocked TCP reconnaissance traffic from the Kali Linux attacker VM. The alert identifies the source and destination systems, firewall action, custom rule, severity level, and MITRE ATT&CK mapping.*
 
 *Figure 2 — Windows Firewall telemetry showing dropped TCP connection attempts from the Kali Linux attacker VM (`192.168.134.130`) to the monitored Windows 11 endpoint (`192.168.134.129`).*
