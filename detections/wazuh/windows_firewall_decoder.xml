@@ -1,0 +1,5 @@
+<decoder name="windows-firewall">
+  <prematch>DROP TCP</prematch>
+  <regex>DROP TCP (\S+) (\S+) (\d+) (\d+)</regex>
+  <order>srcip,dstip,srcport,dstport</order>
+</decoder>
