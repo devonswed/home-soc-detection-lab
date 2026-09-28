@@ -168,3 +168,37 @@ This converted query preserves the core detection behavior of the Sigma correlat
 ![Sigma correlation converted to Splunk SPL](screenshots/detection-scenario/Sigma_Correlation_Converted_to_Splunk_SPL.png)
 
 *Figure 7 — Sigma correlation rule converted into Splunk SPL, demonstrating translation of vendor-neutral detection logic into SIEM-specific correlation logic.*
+
+## 7. Investigation Summary
+
+This project demonstrated an end-to-end detection engineering and SOC investigation workflow using a controlled network reconnaissance scenario within a virtualized home lab.
+
+A Kali Linux attacker VM generated TCP SYN reconnaissance traffic against a monitored Windows 11 endpoint. The activity was examined across multiple layers of the environment, allowing the same behavior to be validated through network traffic, endpoint telemetry, SIEM detections, and portable detection logic.
+
+The investigation followed this workflow:
+
+**Kali Linux / Nmap → Wireshark → Windows Defender Firewall → Wazuh → Splunk → Sigma**
+
+1. **Nmap** generated controlled TCP SYN reconnaissance traffic from the Kali Linux attacker VM.
+2. **Wireshark** captured the traffic and confirmed repeated SYN probes targeting multiple TCP destination ports.
+3. **Windows Defender Firewall** blocked the connection attempts and recorded the activity in the endpoint firewall log.
+4. **Wazuh** ingested the firewall telemetry, parsed the events with a custom decoder, and generated a custom Level 8 reconnaissance alert mapped to MITRE ATT&CK T1046.
+5. **Splunk Enterprise** independently ingested and correlated the firewall events using SPL, identifying repeated blocked connections across multiple destination ports and operationalizing the detection as a scheduled alert.
+6. **Sigma** was used to express the detection logic in a vendor-neutral format and convert the correlation logic into Splunk SPL.
+
+### Key Outcomes
+
+The completed scenario demonstrates hands-on experience with:
+
+- Network traffic generation and reconnaissance using Nmap
+- Packet-level investigation using Wireshark
+- Windows Firewall telemetry collection and analysis
+- SIEM log ingestion and event parsing
+- Custom Wazuh decoder and detection rule development
+- MITRE ATT&CK mapping
+- Splunk SPL development and event correlation
+- Scheduled SIEM alert creation and validation
+- Sigma detection engineering and SIEM query conversion
+- Cross-tool validation of security telemetry
+
+Rather than relying on a single detection source, the activity was validated across multiple layers of telemetry. This provided a complete evidence chain from the original network traffic through endpoint logging, SIEM detection, correlation, and portable detection engineering.
