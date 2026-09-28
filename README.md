@@ -116,6 +116,7 @@ The following display filter was applied:
 ```text
 ip.src == 192.168.134.130 && ip.dst == 192.168.134.129 && tcp.flags.syn == 1 && tcp.flags.ack == 0
 ```
+
 The capture shows repeated TCP SYN packets targeting multiple destination ports, including ports 21, 22, 23, 25, 110, 113, 554, 993, and 1025. This packet-level evidence confirms the port-scanning behavior observed in the Windows Firewall telemetry and subsequently detected by Wazuh.
 
 #### Wireshark Packet Evidence
