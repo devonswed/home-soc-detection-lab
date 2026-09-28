@@ -17,6 +17,7 @@ This project demonstrates an end-to-end security monitoring and detection workfl
 ## Lab Architecture
 
 The lab was built in VMware Workstation using three virtual machines connected through a VMware NAT network.
+![Home SOC Lab Architecture](screenshots/architecture/SOC_Lab_Architecture.png)
 
 | System | Role | IP Address |
 |---|---|---|
