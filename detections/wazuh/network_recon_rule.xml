@@ -1,0 +1,10 @@
+<group name="windows_firewall,network_recon,">
+  <rule id="100100" level="8">
+    <if_sid>4101</if_sid>
+    <srcip>192.168.134.130</srcip>
+    <description>Network reconnaissance detected: Windows Firewall blocked TCP traffic from Kali attacker VM</description>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+  </rule>
+</group>
