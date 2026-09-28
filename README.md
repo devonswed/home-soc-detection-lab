@@ -63,3 +63,9 @@ sudo nmap -Pn -sS 192.168.134.129
 ```
 
 The scan probed the Windows endpoint for accessible TCP services. The Windows Firewall filtered the probes, resulting in Nmap reporting the scanned ports as filtered/no-response.
+
+#### Nmap Scan Evidence
+
+![Kali Linux Nmap SYN scan](screenshots/detection-scenario/01-kali-nmap-syn-scan.png)
+
+*Figure 1 — Controlled TCP SYN reconnaissance performed from the Kali Linux attacker VM against the monitored Windows 11 endpoint. The target remained reachable while the Windows Firewall filtered the scanned TCP ports.*
