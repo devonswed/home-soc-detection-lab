@@ -105,4 +105,3 @@ Key detection details:
 
 *Figure 3 — Wazuh custom detection triggered by blocked TCP reconnaissance traffic from the Kali Linux attacker VM. The alert identifies the source and destination systems, firewall action, custom rule, severity level, and MITRE ATT&CK mapping.*
 
-*Figure 2 — Windows Firewall telemetry showing dropped TCP connection attempts from the Kali Linux attacker VM (`192.168.134.130`) to the monitored Windows 11 endpoint (`192.168.134.129`).*
