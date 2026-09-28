@@ -114,7 +114,6 @@ The following display filter was applied:
 ```text
 ip.src == 192.168.134.130 && ip.dst == 192.168.134.129 && tcp.flags.syn == 1 && tcp.flags.ack == 0
 ```
-
 The capture shows repeated TCP SYN packets targeting multiple destination ports, including ports 21, 22, 23, 25, 110, 113, 554, 993, and 1025. This packet-level evidence confirms the port-scanning behavior observed in the Windows Firewall telemetry and subsequently detected by Wazuh.
 
 #### Wireshark Packet Evidence
@@ -122,3 +121,25 @@ The capture shows repeated TCP SYN packets targeting multiple destination ports,
 ![Wireshark Nmap SYN traffic](screenshots/detection-scenario/04-wireshark-nmap-syn-traffic.png)
 
 *Figure 4 — Wireshark capture showing TCP SYN probes from the Kali Linux attacker VM (`192.168.134.130`) to multiple ports on the monitored Windows 11 endpoint (`192.168.134.129`).*
+
+### 5. Splunk Detection and Alerting
+
+Windows Firewall telemetry was also ingested into Splunk Enterprise to demonstrate detection and investigation of the same reconnaissance activity across a second SIEM platform.
+
+Splunk SPL was used to parse the firewall events, extract the source and destination IP addresses and ports, and correlate repeated blocked TCP connections. The detection identified the Kali Linux attacker VM (`192.168.134.130`) communicating with the Windows 11 endpoint (`192.168.134.129`) across multiple destination ports.
+
+The detection search identified **12 blocked TCP events across 6 unique destination ports**, providing an additional correlation of the reconnaissance activity previously observed in Wireshark and Wazuh.
+
+#### Splunk Detection Evidence
+
+![Splunk network reconnaissance detection](screenshots/detection-scenario/Splunk_Network_Reconnaissance_Detection_Validated.png)
+
+*Figure 5 — Splunk SPL detection correlating blocked TCP connections from the Kali Linux attacker VM and identifying multiple destination ports associated with reconnaissance activity.*
+
+The detection logic was then operationalized as a scheduled Splunk alert named **Network Reconnaissance - TCP Port Scan Detected**. The alert was configured to trigger when the search returned activity meeting the port-scan detection criteria.
+
+#### Splunk Alert Evidence
+
+![Splunk port scan alert](screenshots/detection-scenario/Splunk_Port_Scan_Alert_Triggered.png)
+
+*Figure 6 — Splunk scheduled alert for network reconnaissance showing successful trigger history after detecting the simulated TCP port scan.*
