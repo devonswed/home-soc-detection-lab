@@ -1,0 +1,27 @@
+title: Windows Firewall TCP Port Scan Detection
+id: 7e3c4c1a-6f89-4b91-a2c5-1d57f58b9c01
+status: experimental
+description: Detects blocked TCP connections to multiple destination ports that may indicate network reconnaissance or port scanning.
+author: Devon Swedberg
+date: 2026-09-25
+
+logsource:
+  product: windows
+  category: firewall
+
+detection:
+  selection:
+    action: DROP
+    protocol: TCP
+  condition: selection
+
+falsepositives:
+  - Vulnerability scanners
+  - Network administration tools
+  - Authorized security testing
+
+level: medium
+
+tags:
+  - attack.discovery
+  - attack.t1046

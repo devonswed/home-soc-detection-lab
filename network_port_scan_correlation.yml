@@ -1,0 +1,23 @@
+title: Windows Firewall TCP Port Scan Correlation
+id: 9a1b7c42-8d53-4e91-a1c6-37f42d9e8502
+status: experimental
+description: Detects repeated blocked TCP connections from a single source that may indicate network reconnaissance or port scanning.
+author: Devon Swedberg
+date: 2026-09-25
+
+correlation:
+  type: value_count
+  rules:
+    - 7e3c4c1a-6f89-4b91-a2c5-1d57f58b9c01
+  group-by:
+    - src_ip
+  timespan: 5m
+  condition:
+    field: dst_port
+    gte: 3
+
+level: medium
+
+tags:
+  - attack.discovery
+  - attack.t1046
